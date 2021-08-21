@@ -1,0 +1,59 @@
+:root {
+  --border-color: #d1d3d4;
+  --bg-color: #ffffff;
+  --text-color-light: #82878b;
+  --spacing-base: 0.5rem;
+}
+
+.root {
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  max-width: 320px;
+  min-height: 270px;
+  border-radius: 4px;
+
+  // Fonts
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: normal;
+
+  &.isLoading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+/*------------------------------------*\
+  #HEADER
+\*------------------------------------*/
+
+.header {
+  border-bottom: 1px solid var(--border-color);
+  padding: calc(var(--spacing-base) * 2);
+}
+
+/*------------------------------------*\
+  #Add
+\*------------------------------------*/
+
+.addWrapper {
+  padding: calc(var(--spacing-base) * 2);
+}
+
+/*------------------------------------*\
+  #ToDo List
+\*------------------------------------*/
+
+.todoList {
+  margin: 0;
+  padding: calc(var(--spacing-base) * 2);
+}
+
+/*------------------------------------*\
+  #Footer
+\*------------------------------------*/
+
+.footer {
+  padding: calc(var(--spacing-base) * 2);
+}

@@ -1,0 +1,32 @@
+/*------------------------------------*\
+  #Loading
+\*------------------------------------*/
+
+@keyframes infiniteRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.root {
+  animation: infiniteRotate 1s linear infinite;
+
+  width: 3rem;
+  height: 3rem;
+
+  &.med {
+    width: 6rem;
+    height: 6rem;
+  }
+}
+
+.wrapper {
+  text-align: center;
+  height: 75vh;
+  width: 100px;
+  place-items: center;
+  display: flex;
+}
