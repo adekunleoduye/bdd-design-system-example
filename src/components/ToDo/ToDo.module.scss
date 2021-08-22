@@ -1,8 +1,23 @@
 :root {
   --border-color: #d1d3d4;
   --bg-color: #ffffff;
-  --text-color-light: #82878b;
+  --text-color-light: hsl(207, 4%, 53%);
+  --icon-color-fill: #2e3a59;
+  --icon-color-fill-hover: #576891;
   --spacing-base: 0.5rem;
+}
+
+:global(.screen-reader-text) {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  word-wrap: normal !important;
 }
 
 .root {
@@ -47,7 +62,49 @@
 
 .todoList {
   margin: 0;
-  padding: calc(var(--spacing-base) * 2);
+  padding: 0;
+}
+
+.rootItem {
+  list-style: none;
+  padding: var(--spacing-base) calc(var(--spacing-base) * 2);
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+
+  &:hover,
+  &:focus-within {
+    background-color: #f4f5f6;
+
+    .deleteBtn {
+      opacity: 1;
+      visibility: visible;
+      fill: var(--icon-color-fill-hover);
+    }
+  }
+}
+
+.deleteBtn {
+  opacity: 0;
+  visibility: hidden;
+  padding: 0;
+  display: flex;
+  border-radius: 50%;
+  place-self: center;
+  background: none;
+  border: 0;
+  background: none;
+
+  &:hover {
+    background: none;
+    fill: var(--icon-color-fill);
+  }
+
+  svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    fill: var(--icon-color-fill);
+  }
 }
 
 /*------------------------------------*\

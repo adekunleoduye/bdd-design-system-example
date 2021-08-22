@@ -10,3 +10,9 @@ export default {
 const Template = (args) => ( <ToDo {...args} /> )
 
 export const Default = Template.bind({});
+
+export const WithOneTask = Template.bind({});
+
+WithOneTask.args = {
+  tasks: ["Eat Cookies"],
+}
