@@ -1,5 +1,4 @@
 import React, {useState, useRef, useEffect} from 'react';
-import cn from 'classnames';
 import { v4 as uuid } from 'uuid';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,41 +8,42 @@ import { IoCloseCircle } from "react-icons/io5";
 
 import styles from './ToDo.module.scss';
 
-function ToDoItem({label, setTasks, tasks, setCompletedTasks}) {
+// Remove dependence on setCompletedTasks
+function ToDoItem({label, setTasks, tasks, setCompletedTasks, id}) {
 
-  function removeTask() {
-    return tasks.filter((task) => {
-      return task.name !== label
+  function handleOnChange(e) {
+    setTasks((prevState) => {
+    const newState = prevState;
+    const findTaskIndex = newState.findIndex((task) => (task.name === label));
+    newState[findTaskIndex].completed = e.target.checked
+    setCompletedTasks(newState.filter((task) => (task.completed === true)).length)
+    return newState
     })
+  }
+
+  function handleOnDelete() {
+    setTasks(tasks.filter((task) => {
+      return task.id !== id;
+    }))
   }
   
   return (  
-    <li className={styles.rootItem}> 
+    <Form.Group className={styles.rootItem} id={id}> 
       <Form.Check 
           className={styles.taskCheckbox}
           type={"checkbox"}
           id={label}
           label={label}
-          onChange={(e) => {
-           setTasks((prevState) => {
-            const newState = prevState;
-            const findTaskIndex = newState.findIndex((task) => (task.name === label));
-            newState[findTaskIndex].completed = e.target.checked
-            setCompletedTasks(newState.filter((task) => (task.completed === true)).length)
-            return newState
-           })
-          }}
+          onChange={handleOnChange}
         />
 
         <Button variant="secondary" className={styles.deleteBtn}
-         onClick={() => {
-           setTasks(removeTask)
-          }}
+         onClick={handleOnDelete}
          >
           <span className="screen-reader-text">delete {label}</span>
           <IoCloseCircle />
         </Button>
-    </li>
+    </Form.Group>
   )
 }
 
@@ -54,15 +54,13 @@ function ToDo({tasks = []}) {
 
   const inputRef = useRef();
 
-  
   useEffect(() => {
-    console.log({completedTasks, currentTasks: currentTasks.length});
+    console.log({completedTasks,currentTasks});
+    // Resets completed tasks when task is 0
     if(currentTasks.length === 0) {
       setCompletedTasks(0)
     }
   }, [completedTasks, currentTasks])
-
-
 
   return (
     <div className={styles.root}>
@@ -80,6 +78,9 @@ function ToDo({tasks = []}) {
             value={value}
           />
           <Button variant="primary" id="addTaskBtn" onClick={() => {
+            if(!value){
+              return;
+            }
             setTasks([...currentTasks, {name: value, completed: false, id: uuid()}]);
             setValue('');
           }}>
@@ -87,13 +88,16 @@ function ToDo({tasks = []}) {
           </Button>
         </InputGroup>
       </div>
-      {currentTasks.length === 0 ? (<div className={styles.emptyStateWrapper}><p>You have no tasks at the moment.</p></div>): (<ul className={styles.todoList}>
+      <div className={styles.content}>
+      {currentTasks.length === 0 ? (<div className={styles.emptyStateWrapper}><p>You have no tasks at the moment.</p></div>): (
+      <Form className={styles.todoList}>
         {
           currentTasks.map((task) => {
-            return <ToDoItem label={task.name} key={task.id} setTasks={setTasks} tasks={currentTasks} setCompletedTasks={setCompletedTasks} />
+            return <ToDoItem label={task.name} key={task.id} id={task.id} setTasks={setTasks} tasks={currentTasks} setCompletedTasks={setCompletedTasks} />
           })
         }
-      </ul>)}
+      </Form>
+      )}
       {(currentTasks.length > 0) && <footer className={styles.footer}>
         <div>
           <span className={styles.completedPercentage}>
@@ -102,9 +106,10 @@ function ToDo({tasks = []}) {
           </span>
         </div>
         <div className={styles.progressWrapper}>
-          <ProgressBar now={(completedTasks / currentTasks.length) * 100}  />
+          <ProgressBar variant="success" now={(completedTasks / currentTasks.length) * 100}  />
         </div>
       </footer>}
+      </div>
     </div>
   )
 }
