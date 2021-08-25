@@ -11,8 +11,13 @@ const Template = (args) => ( <ToDo {...args} /> )
 
 export const Default = Template.bind({});
 
-export const WithOneTask = Template.bind({});
+export const WithATask = Template.bind({});
 
-WithOneTask.args = {
+WithATask.args = {
   tasks: ["Eat Cookies"],
+}
+export const WithMultipleTask = Template.bind({});
+
+WithMultipleTask.args = {
+  tasks: ["Eat Cookies", "Drink Milk"],
 }

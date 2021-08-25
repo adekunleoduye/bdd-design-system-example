@@ -4,12 +4,18 @@ import { v4 as uuid } from 'uuid';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Button, InputGroup, FormControl, Form } from 'react-bootstrap';
+import { Button, InputGroup, FormControl, Form, ProgressBar } from 'react-bootstrap';
 import { IoCloseCircle } from "react-icons/io5";
 
 import styles from './ToDo.module.scss';
 
-function ToDoItem({label, setTasks, tasks}) {
+function ToDoItem({label, setTasks, tasks, setCompletedTasks}) {
+
+  function removeTask() {
+    return tasks.filter((task) => {
+      return task.name !== label
+    })
+  }
   
   return (  
     <li className={styles.rootItem}> 
@@ -18,10 +24,21 @@ function ToDoItem({label, setTasks, tasks}) {
           type={"checkbox"}
           id={label}
           label={label}
+          onChange={(e) => {
+           setTasks((prevState) => {
+            const newState = prevState;
+            const findTaskIndex = newState.findIndex((task) => (task.name === label));
+            newState[findTaskIndex].completed = e.target.checked
+            setCompletedTasks(newState.filter((task) => (task.completed === true)).length)
+            return newState
+           })
+          }}
         />
 
         <Button variant="secondary" className={styles.deleteBtn}
-        //  onClick={() => setTasks(tasks)}
+         onClick={() => {
+           setTasks(removeTask)
+          }}
          >
           <span className="screen-reader-text">delete {label}</span>
           <IoCloseCircle />
@@ -33,17 +50,19 @@ function ToDoItem({label, setTasks, tasks}) {
 function ToDo({tasks = []}) {
   const [value, setValue] = useState('');
   const [currentTasks, setTasks] = useState(tasks.map((task) => ({name: task, completed: false, id: uuid()})));
+  const [completedTasks, setCompletedTasks] = useState(0);
 
   const inputRef = useRef();
 
   
-  // useEffect(() => {
-  //   console.log(value);
-  // }, [value])
-  
-  // useEffect(() => {
-  //   console.log(tasks);
-  // }, [tasks])
+  useEffect(() => {
+    console.log({completedTasks, currentTasks: currentTasks.length});
+    if(currentTasks.length === 0) {
+      setCompletedTasks(0)
+    }
+  }, [completedTasks, currentTasks])
+
+
 
   return (
     <div className={styles.root}>
@@ -58,22 +77,34 @@ function ToDo({tasks = []}) {
             aria-describedby="addTaskBtn"
             ref={inputRef}
             onChange={(e) => setValue(e.target.value)}
+            value={value}
           />
-          <Button variant="primary" id="addTaskBtn" onClick={() => setTasks([...tasks, {name: value, completed: false, id: uuid()}])} >
+          <Button variant="primary" id="addTaskBtn" onClick={() => {
+            setTasks([...currentTasks, {name: value, completed: false, id: uuid()}]);
+            setValue('');
+          }}>
             Add
           </Button>
         </InputGroup>
       </div>
-      <ul className={styles.todoList}>
+      {currentTasks.length === 0 ? (<div className={styles.emptyStateWrapper}><p>You have no tasks at the moment.</p></div>): (<ul className={styles.todoList}>
         {
           currentTasks.map((task) => {
-            return <ToDoItem label={task.name} key={task.name} setTasks={setTasks} tasks={currentTasks} />
+            return <ToDoItem label={task.name} key={task.id} setTasks={setTasks} tasks={currentTasks} setCompletedTasks={setCompletedTasks} />
           })
         }
-      </ul>
-      <footer className={styles.footer}>
-        footer
-      </footer>
+      </ul>)}
+      {(currentTasks.length > 0) && <footer className={styles.footer}>
+        <div>
+          <span className={styles.completedPercentage}>
+            {Math.round((completedTasks / currentTasks.length) * 100)}% 
+            <span className="screen-reader-text">{Math.round((completedTasks / currentTasks.length) * 100)}%  tasks completed</span>
+          </span>
+        </div>
+        <div className={styles.progressWrapper}>
+          <ProgressBar now={(completedTasks / currentTasks.length) * 100}  />
+        </div>
+      </footer>}
     </div>
   )
 }

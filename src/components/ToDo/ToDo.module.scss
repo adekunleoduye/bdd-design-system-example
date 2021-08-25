@@ -97,7 +97,10 @@
 
   &:hover {
     background: none;
-    fill: var(--icon-color-fill);
+
+    svg {
+      fill: var(--icon-color-fill-hover);
+    }
   }
 
   svg {
@@ -113,4 +116,15 @@
 
 .footer {
   padding: calc(var(--spacing-base) * 2);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--spacing-base);
+}
+
+.completedPercentage {
+  color: var(--text-color-light);
+}
+
+.progressWrapper {
+  align-self: center;
 }

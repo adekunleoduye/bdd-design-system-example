@@ -1,6 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {Default, WithOneTask} from './Todo.stories.js'
+import {Default, WithATask, WithMultipleTask} from './Todo.stories.js'
 
 
 describe('ToDo', () => {
@@ -23,7 +23,7 @@ describe('ToDo', () => {
   })
   describe('When the user removes a task', () => {
     it("should be removed from task list", () => {
-      render(<WithOneTask {...WithOneTask.args} />)
+      render(<WithATask {...WithATask.args} />)
 
       const task =  screen.getByRole('checkbox', { name: /Eat Cookies/i })
       expect(task).toBeInTheDocument();
@@ -32,10 +32,24 @@ describe('ToDo', () => {
       expect(task).not.toBeInTheDocument();
     })
   })
-  describe('When the user completes a task', () => {
-    it.todo("should be mark completed")
+  describe('When the user completes  a task', () => {
+    it("should be mark completed", () => {
+      render(<WithMultipleTask {...WithMultipleTask.args}  />)
+
+      const task =  screen.getByRole('checkbox', { name: /Eat Cookies/i })
+      const originalPercentage =  screen.getByText(/0% tasks completed/i)
+      expect(originalPercentage).toBeInTheDocument();
+      userEvent.click(task)
+      const updatedPercentage =  screen.getByText(/50% tasks completed/i)
+      expect(updatedPercentage).toBeInTheDocument();
+    })
   })
   describe('When there are no tasks', () => {
-    it.todo("should display a empty state message")
+    it("should display a empty state message", () => {
+      render(<Default  />)
+      const actual = screen.getByText('You have no tasks at the moment.');
+
+      expect(actual).toBeInTheDocument();
+    })
   })   
 })
