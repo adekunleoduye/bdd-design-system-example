@@ -40,7 +40,7 @@ describe('ToDo', () => {
       const originalPercentage =  screen.getByText(/0% tasks completed/i)
       expect(originalPercentage).toBeInTheDocument();
       userEvent.click(task)
-      const updatedPercentage =  screen.getByText(/50% tasks completed/i)
+      const updatedPercentage =  screen.getByText(/33% tasks completed/i)
       expect(updatedPercentage).toBeInTheDocument();
     })
   })

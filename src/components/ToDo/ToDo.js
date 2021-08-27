@@ -55,7 +55,6 @@ function ToDo({tasks = []}) {
   const inputRef = useRef();
 
   useEffect(() => {
-    console.log({completedTasks,currentTasks});
     // Resets completed tasks when task is 0
     if(currentTasks.length === 0) {
       setCompletedTasks(0)

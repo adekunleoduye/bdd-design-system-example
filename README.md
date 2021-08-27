@@ -6,5 +6,9 @@ This is a simple project to showcase BDD (Behavior Driven Development) within a 
 
 ```
 yarn install
-yarn run storybook
+yarn storybook
 ```
+
+## Run Test
+
+`yarn test`

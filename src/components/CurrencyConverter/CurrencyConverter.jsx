@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import cn from 'classnames';
-import { Button, InputGroup, FormControl, Dropdown, Form } from 'react-bootstrap';
+import { Button, InputGroup, FormControl, Form } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import Loading from '../Loading'
 
@@ -23,7 +23,7 @@ const updatedDate = new Intl.DateTimeFormat('en-US', {
 }).format(updated * 1000);
 
 export const CurrencyItem = ({countryCode, setBaseValue, baseValue}) => {
-  const {symbol, currency, countryName, iso} = getAllInfoByISO(countryCode);
+  const { currency, countryName, iso} = getAllInfoByISO(countryCode);
 
   function handleChange(e) {
     setBaseValue(e.target.value)
@@ -70,11 +70,11 @@ export const CurrencyItem = ({countryCode, setBaseValue, baseValue}) => {
 
 
 export default function CurrencyConverter({loading = false}) {
-  const [isLoading, setLoading] = useState(loading);
+  const [isLoading,] = useState(loading);
   const [selectedCurrency, setSelectedCurrency] = useState('');
-  const [currencyList, setCurrencyList] = useState(["US", "CA"]);
-  const [baseCountry, setBaseCountry] = useState('United States');
-  const [baseCurrency, setBaseCurrency] = useState('USD');
+  const [currencyList, ] = useState(["US", "CA"]);
+  // const [baseCountry, setBaseCountry] = useState('United States');
+  // const [baseCurrency, setBaseCurrency] = useState('USD');
   const [baseValue, setBaseValue] = useState(1)
 
   // useEffect(() => {

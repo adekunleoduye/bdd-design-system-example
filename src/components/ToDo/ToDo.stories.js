@@ -19,5 +19,5 @@ WithATask.args = {
 export const WithMultipleTask = Template.bind({});
 
 WithMultipleTask.args = {
-  tasks: ["Eat Cookies", "Drink Milk"],
+  tasks: ["Eat Cookies", "Drink Milk", "Take a nap"],
 }
