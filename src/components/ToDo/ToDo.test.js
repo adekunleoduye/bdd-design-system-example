@@ -32,8 +32,8 @@ describe('ToDo', () => {
       expect(task).not.toBeInTheDocument();
     })
   })
-  describe('When the user completes  a task', () => {
-    it("should be mark completed", () => {
+  describe('When the user completes a task', () => {
+    it("should be mark as completed", () => {
       render(<WithMultipleTask {...WithMultipleTask.args}  />)
 
       const task =  screen.getByRole('checkbox', { name: /Eat Cookies/i })
